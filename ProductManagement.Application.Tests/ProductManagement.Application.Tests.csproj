@@ -28,8 +28,4 @@
       <ProjectReference Include="..\ProductManagement.Domain\ProductManagement.Domain.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Categories\DeleteCategory\" />
-    </ItemGroup>
-
 </Project>

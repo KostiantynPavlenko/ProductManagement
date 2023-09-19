@@ -37,7 +37,7 @@ public class CreateCategoryCommandHandlerTests
         
         _categoryRepository.Verify(x => x.Create(It.IsAny<Category>()), Times.Exactly(1));
         
-        result.IsFailure.Should().Be(false);
+        result.IsSuccess.Should().BeTrue();
     }
     
     [Fact]
