@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Extensions.Web.Results;
+using MediatR;
 using Microsoft.Extensions.Logging;
 using ProductManagement.Application.Common.ValidationResults;
 

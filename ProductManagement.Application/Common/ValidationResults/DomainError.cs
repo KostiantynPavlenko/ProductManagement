@@ -1,4 +1,6 @@
-﻿namespace ProductManagement.Application.Common.ValidationResults;
+﻿using Extensions.Web.Results;
+
+namespace ProductManagement.Application.Common.ValidationResults;
 
 public static class DomainErrors
 {

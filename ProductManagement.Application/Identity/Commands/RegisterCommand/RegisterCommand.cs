@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Extensions.Web.Results;
+using MediatR;
 using ProductManagement.Application.Common.ValidationResults;
 using ProductManagement.Application.Identity.DTO;
 

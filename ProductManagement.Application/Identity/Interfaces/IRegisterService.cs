@@ -1,4 +1,5 @@
-﻿using ProductManagement.Application.Common.ValidationResults;
+﻿using Extensions.Web.Results;
+using ProductManagement.Application.Common.ValidationResults;
 using ProductManagement.Application.Identity.DTO;
 
 namespace ProductManagement.Application.Identity.Interfaces;
