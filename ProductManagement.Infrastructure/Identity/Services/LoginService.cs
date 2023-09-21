@@ -25,7 +25,7 @@ public class LoginService : ILoginService
     
     public async Task<Result<ApplicationUserDto>> Login(LoginUserDto loginUser)
     {
-        var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == loginUser.UserName);
+        var user = await _userManager.FindByNameAsync(loginUser.UserName);
 
         if (user is null)
         {

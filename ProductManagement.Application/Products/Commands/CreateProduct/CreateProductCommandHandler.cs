@@ -11,12 +11,10 @@ namespace ProductManagement.Application.Products.Commands.CreateProduct;
 public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, Result>
 {
     private readonly IRepository<Product> _productRepository;
-    private readonly IMapper _mapper;
 
-    public CreateProductCommandHandler(IRepository<Product> productRepository, IMapper mapper)
+    public CreateProductCommandHandler(IRepository<Product> productRepository)
     {
         _productRepository = productRepository;
-        _mapper = mapper;
     }
     
     public async Task<Result> Handle(CreateProductCommand request, CancellationToken cancellationToken)

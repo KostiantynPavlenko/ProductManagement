@@ -1,9 +1,6 @@
 ﻿using FluentAssertions;
 using Moq;
-using ProductManagement.Application.Categories.Commands.CreateCategory;
 using ProductManagement.Application.Categories.Commands.DeleteCategory;
-using ProductManagement.Application.Categories.Commands.UpdateCategory;
-using ProductManagement.Application.Categories.DTO;
 using ProductManagement.Application.Common;
 using ProductManagement.Application.Common.ValidationResults;
 using ProductManagement.Domain.Categories;
