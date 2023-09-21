@@ -1,7 +1,6 @@
 ﻿using Extensions.Web.Results;
 using MediatR;
 using ProductManagement.Application.Categories.DTO;
-using ProductManagement.Application.Common.ValidationResults;
 
 namespace ProductManagement.Application.Categories.Queries.GetCategory;
 
