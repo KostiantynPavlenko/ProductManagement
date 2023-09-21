@@ -67,5 +67,10 @@ public static class DomainErrors
             "Products.Update",
             "Product updating failed"
         );
+        
+        public static readonly Error GetProduct = new(
+            "Products.Get",
+            "Product not found"
+        );
     }
 }

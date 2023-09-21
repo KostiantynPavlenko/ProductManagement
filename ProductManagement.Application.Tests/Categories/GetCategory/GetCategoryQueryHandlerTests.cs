@@ -15,7 +15,6 @@ public class GetCategoryQueryHandlerTests
     private readonly Mock<IRepository<Category>> _categoryRepository;
     private readonly Mock<IMapper> _mapper;
     
-
     public GetCategoryQueryHandlerTests()
     {
         _categoryRepository = new Mock<IRepository<Category>>();

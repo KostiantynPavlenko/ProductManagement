@@ -11,12 +11,10 @@ namespace ProductManagement.Application.Products.Commands.UpdateProduct;
 public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, Result>
 {
     private readonly IRepository<Product> _productRepository;
-    private readonly IMapper _mapper;
 
-    public UpdateProductCommandHandler(IRepository<Product> productRepository, IMapper mapper)
+    public UpdateProductCommandHandler(IRepository<Product> productRepository)
     {
         _productRepository = productRepository;
-        _mapper = mapper;
     }
     
     public async Task<Result> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
