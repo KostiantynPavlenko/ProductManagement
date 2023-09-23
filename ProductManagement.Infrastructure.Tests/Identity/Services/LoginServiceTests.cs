@@ -66,7 +66,7 @@ public class LoginServiceTests
         result.Should().BeAssignableTo<Result<ApplicationUserDto>>();
         result.IsSuccess.Should().BeTrue();
         result.Value.UserName.Should().BeEquivalentTo(UserCredentialsConstants.UserName);
-        result.Value.Email.Should().BeEquivalentTo(UserCredentialsConstants.UserName);
+        result.Value.Email.Should().BeEquivalentTo(UserCredentialsConstants.Email);
     }
     
     [Fact]
