@@ -25,6 +25,6 @@ public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryComman
         
         var result = await _categoryRepository.Update(category);
 
-        return result ? Result.Success() : Result.Failure(DomainErrors.Categories.UpdateCategory);
+        return result ? Result.Success() : Result.Failure(DomainErrors.Categories.UpdateCategoryFailed);
     }
 }

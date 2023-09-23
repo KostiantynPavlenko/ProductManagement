@@ -22,11 +22,11 @@ public class RegisterService : IRegisterService
     
     public async Task<Result<ApplicationUserDto>> Register(RegisterUserDto registerUser)
     {
-        var userExists = await _userManager.Users.AnyAsync(x => x.UserName == registerUser.UserName);
+        var userExists = await _userManager.FindByNameAsync(registerUser.UserName) is not null;
 
         if (userExists)
         {
-            return Result<ApplicationUserDto>.Failure(DomainErrors.Registration.UserNameVerification);
+            return Result<ApplicationUserDto>.Failure(DomainErrors.Registration.UserNameAlreadyExists);
         }
 
         var user = new ApplicationUser
@@ -41,7 +41,7 @@ public class RegisterService : IRegisterService
 
         if (!result.Succeeded)
         {
-            return Result<ApplicationUserDto>.Failure(DomainErrors.Registration.UserCreation);
+            return Result<ApplicationUserDto>.Failure(DomainErrors.Registration.UserCreationFailed);
         }
 
         var createdUser = _userCreator.CreateIdentityUser(user.UserName, user.Email);

@@ -1,15 +1,18 @@
 ﻿using ProductManagement.Infrastructure.Identity.Models;
+using ProductManagement.Infrastructure.Tests.Identity.Constants;
 
 namespace ProductManagement.Infrastructure.Tests.Identity.Common;
 
 public static class ApplicationUserCreator
 {
-    public static ApplicationUser CreateApplicationUser(string username, string email)
+    public static ApplicationUser CreateApplicationUser()
     {
         return new ApplicationUser
         {
-            Email = email,
-            UserName = username
+            FirstName = UserCredentialsConstants.FirstName,
+            LastName = UserCredentialsConstants.LastName,
+            Email = UserCredentialsConstants.Email,
+            UserName = UserCredentialsConstants.UserName,
         };
     }
 }

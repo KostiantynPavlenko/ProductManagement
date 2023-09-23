@@ -21,6 +21,6 @@ public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryComman
         
         return result
             ? Result.Success()
-            : Result.Failure(DomainErrors.Categories.DeleteCategory);
+            : Result.Failure(DomainErrors.Categories.DeleteCategoryFailed);
     }
 }

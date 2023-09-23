@@ -20,6 +20,6 @@ public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand,
         var result = await _productRepository.Delete(request.ProductId);
         return result
             ? Result.Success()
-            : Result.Failure(DomainErrors.Products.ProductDeletion);
+            : Result.Failure(DomainErrors.Products.ProductDeletionFailed);
     }
 }

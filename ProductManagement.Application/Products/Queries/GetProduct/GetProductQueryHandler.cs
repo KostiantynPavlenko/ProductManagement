@@ -24,7 +24,7 @@ public class GetProductQueryHandler : IRequestHandler<GetProductQuery, Result<Pr
         var product = await _productRepository.GetById(request.ProductId);
         var productDto = _mapper.Map<Product, ProductDto>(product);
         return productDto is null 
-            ? Result<ProductDto>.NotFound(DomainErrors.Products.GetProduct)
+            ? Result<ProductDto>.NotFound(DomainErrors.Products.NotFound)
             : Result<ProductDto>.Success(productDto);
     }
 }

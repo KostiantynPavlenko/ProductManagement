@@ -88,7 +88,7 @@ public class UpdateProductCommandHandlerTests
 
         result.Should().BeAssignableTo<Result>();
         result.IsFailure.Should().BeTrue();
-        result.Error.Should().Be(DomainErrors.Products.ProductUpdating);
+        result.Error.Should().Be(DomainErrors.Products.ProductUpdatingFailed);
     }
 
 }

@@ -29,6 +29,6 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
         
         return result
             ? Result.Success()
-            : Result.Failure(DomainErrors.Products.ProductUpdating);
+            : Result.Failure(DomainErrors.Products.ProductUpdatingFailed);
     }
 }

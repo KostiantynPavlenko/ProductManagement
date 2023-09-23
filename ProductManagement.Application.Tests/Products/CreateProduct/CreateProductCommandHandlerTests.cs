@@ -64,7 +64,7 @@ public class CreateProductCommandHandlerTests
         
         _repository.Verify(x => x.Create(It.IsAny<Product>()), Times.Exactly(1));
 
-        result.Error.Should().Be(DomainErrors.Products.ProductCreation);
+        result.Error.Should().Be(DomainErrors.Products.ProductCreationFailed);
         result.IsFailure.Should().BeTrue();
     }
 }

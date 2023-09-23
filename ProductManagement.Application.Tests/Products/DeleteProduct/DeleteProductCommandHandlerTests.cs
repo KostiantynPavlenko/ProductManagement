@@ -58,7 +58,7 @@ public class DeleteProductCommandHandlerTests
         
         _repository.Verify(x => x.Delete(default), Times.Exactly(1));
 
-        result.Error.Should().Be(DomainErrors.Products.ProductDeletion);
+        result.Error.Should().Be(DomainErrors.Products.ProductDeletionFailed);
         result.IsFailure.Should().BeTrue();
     }
 }

@@ -55,7 +55,7 @@ public class DeleteCategoryCommandHandlerTests
         
         _categoryRepository.Verify(x => x.Delete(default), Times.Exactly(1));
 
-        result.Error.Should().Be(DomainErrors.Categories.DeleteCategory);
+        result.Error.Should().Be(DomainErrors.Categories.DeleteCategoryFailed);
         result.IsFailure.Should().BeTrue();
     }
 }

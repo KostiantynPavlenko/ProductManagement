@@ -28,6 +28,6 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
 
         return result
             ? Result.Success()
-            : Result.Failure(DomainErrors.Products.ProductCreation);
+            : Result.Failure(DomainErrors.Products.ProductCreationFailed);
     }
 }

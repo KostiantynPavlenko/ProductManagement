@@ -29,14 +29,14 @@ public class LoginService : ILoginService
 
         if (user is null)
         {
-           return Result<ApplicationUserDto>.Unauthorized(DomainErrors.Login.UserNameVerification);
+           return Result<ApplicationUserDto>.Unauthorized(DomainErrors.Login.UserNamesNotRegistered);
         }
 
         var result = await _signInManager.CheckPasswordSignInAsync(user, loginUser.Password, false);
 
         if (!result.Succeeded)
         {
-            return Result<ApplicationUserDto>.Unauthorized(DomainErrors.Login.CredentialsVerification);
+            return Result<ApplicationUserDto>.Unauthorized(DomainErrors.Login.InvalidCredentialsProvided);
         }
 
         var identityUser = _userCreator.CreateIdentityUser(user?.UserName, user?.Email);

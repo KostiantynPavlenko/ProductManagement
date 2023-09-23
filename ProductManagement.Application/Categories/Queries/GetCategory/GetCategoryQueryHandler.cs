@@ -25,7 +25,7 @@ public class GetCategoryQueryHandler : IRequestHandler<GetCategoryQuery, Result<
 
         if (result is null)
         {
-            return Result<CategoryDto>.NotFound(DomainErrors.Categories.GetCategory);
+            return Result<CategoryDto>.NotFound(DomainErrors.Categories.CategoryNotFound);
         }
 
         var categoryDto = _mapper.Map<Category, CategoryDto>(result);

@@ -63,6 +63,6 @@ public class UpdateCategoryCommandHandlerTests
         _categoryRepository.Verify(x => x.Update(It.IsAny<Category>()), Times.Exactly(1));
         
         result.IsFailure.Should().BeTrue();
-        result.Error.Should().Be(DomainErrors.Categories.UpdateCategory);
+        result.Error.Should().Be(DomainErrors.Categories.UpdateCategoryFailed);
     }
 }

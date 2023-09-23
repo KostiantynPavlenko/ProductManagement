@@ -25,6 +25,6 @@ public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryComman
         var result = await _categoryRepository.Create(category);
 
         return !result ?
-            Result.Failure(DomainErrors.Categories.CreateCategory) : Result.Success();
+            Result.Failure(DomainErrors.Categories.CreateCategoryFailed) : Result.Success();
     }
 }

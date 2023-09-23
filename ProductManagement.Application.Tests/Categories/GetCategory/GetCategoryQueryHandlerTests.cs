@@ -87,6 +87,6 @@ public class GetCategoryQueryHandlerTests
         _categoryRepository.Verify(x => x.GetById(categoryId), Times.Exactly(1));
         
         result.IsFailure.Should().BeTrue();
-        result.Error.Should().Be(DomainErrors.Categories.GetCategory);
+        result.Error.Should().Be(DomainErrors.Categories.CategoryNotFound);
     }
 }

@@ -14,132 +14,131 @@ using ProductManagement.Infrastructure.Tests.Identity.Mocks;
 
 namespace ProductManagement.Infrastructure.Tests.Identity.Services;
 
-public class LoginServiceTests
+public class RegisterServiceTests
 {
     private readonly Mock<FakeUserManager> _userManager;
-    private readonly Mock<FakeSignInManager> _signInManager;
     private readonly IIdentityUserCreator _userCreator;
     private readonly Mock<ITokenService> _tokenService;
     
-    public LoginServiceTests()
+    public RegisterServiceTests()
     {
         _userManager = new Mock<FakeUserManager>();
-        _signInManager = new Mock<FakeSignInManager>();
-        
-         _tokenService = new Mock<ITokenService>();
+        _tokenService = new Mock<ITokenService>();
         _userCreator = new IdentityUserCreator(_tokenService.Object);
-    }
-
-    [Fact]
-    public async Task Login_WithValidCredentials_UserIsLoggedIn()
-    {
-        var user = ApplicationUserCreator.CreateApplicationUser();
-        var userDto = new LoginUserDto
-        {
-            UserName = UserCredentialsConstants.UserName,
-            Password = UserCredentialsConstants.Password
-        };
-        
-        _userManager.Setup(x => x.FindByNameAsync(user.UserName))
-            .ReturnsAsync(user)
-            .Verifiable();
-        
-        _signInManager.Setup(x => x.CheckPasswordSignInAsync(user, UserCredentialsConstants.Password, false))
-            .ReturnsAsync(SignInResult.Success)
-            .Verifiable();
-        
-        _tokenService.Setup(x => x.GenerateToken(UserCredentialsConstants.UserName, UserCredentialsConstants.Password))
-            .Returns(UserCredentialsConstants.Token)
-            .Verifiable();
-
-        var loginService = new LoginService(_userManager.Object, _signInManager.Object, _userCreator);
-
-        var result = await loginService.Login(userDto);
-
-
-        _userManager.Verify(x => x.FindByNameAsync(user.UserName),Times.Exactly(1));
-
-        _signInManager.Verify(x => x.CheckPasswordSignInAsync(user, UserCredentialsConstants.Password, false),Times.Exactly(1));
-
-        _tokenService.Verify(x => x.GenerateToken(UserCredentialsConstants.UserName, UserCredentialsConstants.Email),Times.Exactly(1));
-
-        result.Should().BeAssignableTo<Result<ApplicationUserDto>>();
-        result.IsSuccess.Should().BeTrue();
-        result.Value.UserName.Should().BeEquivalentTo(UserCredentialsConstants.UserName);
-        result.Value.Email.Should().BeEquivalentTo(UserCredentialsConstants.UserName);
     }
     
     [Fact]
-    public async Task Login_WithNotExistingCredentials_ReturnsNotAuthorized()
+    public async Task Register_WithValidCredentials_UserIsSignedUp()
     {
         var user = ApplicationUserCreator.CreateApplicationUser();
-        var userDto = new LoginUserDto
+        
+        var registerUser = new RegisterUserDto
         {
+            FirstName = UserCredentialsConstants.FirstName,
+            LastName = UserCredentialsConstants.LastName,
+            Email = UserCredentialsConstants.Email,
             UserName = UserCredentialsConstants.UserName,
             Password = UserCredentialsConstants.Password
         };
         
         _userManager.Setup(x => x.FindByNameAsync(user.UserName))
             .ReturnsAsync(default(ApplicationUser))
+            .Verifiable();        
+        
+        _userManager.Setup(x => x.CreateAsync(It.IsAny<ApplicationUser>(), registerUser.Password))
+            .ReturnsAsync(IdentityResult.Success)
             .Verifiable();
         
-        _signInManager.Setup(x => x.CheckPasswordSignInAsync(user, UserCredentialsConstants.Password, false))
+        _tokenService.Setup(x => x.GenerateToken(UserCredentialsConstants.UserName, UserCredentialsConstants.Password))
+            .Returns(UserCredentialsConstants.Token)
             .Verifiable();
+
+        var registerService = new RegisterService(_userManager.Object, _userCreator);
+
+        var result = await registerService.Register(registerUser);
         
-        _tokenService.Setup(x => x.GenerateToken(UserCredentialsConstants.UserName, UserCredentialsConstants.Email))
-            .Verifiable();
-
-        var loginService = new LoginService(_userManager.Object, _signInManager.Object, _userCreator);
-
-        var result = await loginService.Login(userDto);
-
-
+        _userManager.Verify(x => x.CreateAsync(It.IsAny<ApplicationUser>(), registerUser.Password),Times.Exactly(1));
         _userManager.Verify(x => x.FindByNameAsync(user.UserName),Times.Exactly(1));
-
-        _signInManager.Verify(x => x.CheckPasswordSignInAsync(user, UserCredentialsConstants.Password, false),Times.Never);
-
-        _tokenService.Verify(x => x.GenerateToken(UserCredentialsConstants.UserName, UserCredentialsConstants.Email),Times.Never);
+        _tokenService.Verify(x => x.GenerateToken(UserCredentialsConstants.UserName, UserCredentialsConstants.Email),Times.Exactly(1));
 
         result.Should().BeAssignableTo<Result<ApplicationUserDto>>();
-        result.IsFailure.Should().BeTrue();
-        result.Error.Should().Be(DomainErrors.Login.UserNamesNotRegistered);
+        result.IsSuccess.Should().BeTrue();
+        result.Value.UserName.Should().BeEquivalentTo(UserCredentialsConstants.UserName);
+        result.Value.Email.Should().BeEquivalentTo(UserCredentialsConstants.Email);
     }
     
-    
     [Fact]
-    public async Task Login_WithInvalidPassword_ReturnsNotAuthorized()
+    public async Task Register_WithExistingUserCredentials_ReturnFailureResult()
     {
         var user = ApplicationUserCreator.CreateApplicationUser();
-        var userDto = new LoginUserDto
+        
+        var registerUser = new RegisterUserDto
         {
+            FirstName = UserCredentialsConstants.FirstName,
+            LastName = UserCredentialsConstants.LastName,
+            Email = UserCredentialsConstants.Email,
             UserName = UserCredentialsConstants.UserName,
             Password = UserCredentialsConstants.Password
         };
         
         _userManager.Setup(x => x.FindByNameAsync(user.UserName))
             .ReturnsAsync(user)
+            .Verifiable();        
+        
+        _userManager.Setup(x => x.CreateAsync(It.IsAny<ApplicationUser>(), registerUser.Password))
             .Verifiable();
         
-        _signInManager.Setup(x => x.CheckPasswordSignInAsync(user, UserCredentialsConstants.Password, false))
-            .ReturnsAsync(SignInResult.Failed)
+        _tokenService.Setup(x => x.GenerateToken(UserCredentialsConstants.UserName, UserCredentialsConstants.Password))
             .Verifiable();
+
+        var registerService = new RegisterService(_userManager.Object, _userCreator);
+
+        var result = await registerService.Register(registerUser);
         
-        _tokenService.Setup(x => x.GenerateToken(UserCredentialsConstants.UserName, UserCredentialsConstants.Email))
-            .Verifiable();
-
-        var loginService = new LoginService(_userManager.Object, _signInManager.Object, _userCreator);
-
-        var result = await loginService.Login(userDto);
-
-
+        _userManager.Verify(x => x.CreateAsync(It.IsAny<ApplicationUser>(), registerUser.Password),Times.Never);
         _userManager.Verify(x => x.FindByNameAsync(user.UserName),Times.Exactly(1));
-
-        _signInManager.Verify(x => x.CheckPasswordSignInAsync(user, UserCredentialsConstants.Password, false),Times.Exactly(1));
-
         _tokenService.Verify(x => x.GenerateToken(UserCredentialsConstants.UserName, UserCredentialsConstants.Email),Times.Never);
 
         result.Should().BeAssignableTo<Result<ApplicationUserDto>>();
         result.IsFailure.Should().BeTrue();
-        result.Error.Should().Be(DomainErrors.Login.InvalidCredentialsProvided);
+        result.Error.Should().Be(DomainErrors.Registration.UserNameAlreadyExists);
+    }
+    
+    [Fact]
+    public async Task Register_ThrowErrorWithValidCredentials_ReturnsFailureResult()
+    {
+        var user = ApplicationUserCreator.CreateApplicationUser();
+        
+        var registerUser = new RegisterUserDto
+        {
+            FirstName = UserCredentialsConstants.FirstName,
+            LastName = UserCredentialsConstants.LastName,
+            Email = UserCredentialsConstants.Email,
+            UserName = UserCredentialsConstants.UserName,
+            Password = UserCredentialsConstants.Password
+        };
+        
+        _userManager.Setup(x => x.FindByNameAsync(user.UserName))
+            .ReturnsAsync(default(ApplicationUser))
+            .Verifiable();        
+        
+        _userManager.Setup(x => x.CreateAsync(It.IsAny<ApplicationUser>(), registerUser.Password))
+            .ReturnsAsync(IdentityResult.Failed())
+            .Verifiable();
+        
+        _tokenService.Setup(x => x.GenerateToken(UserCredentialsConstants.UserName, UserCredentialsConstants.Password))
+            .Verifiable();
+
+        var registerService = new RegisterService(_userManager.Object, _userCreator);
+
+        var result = await registerService.Register(registerUser);
+        
+        _userManager.Verify(x => x.CreateAsync(It.IsAny<ApplicationUser>(), registerUser.Password),Times.Exactly(1));
+        _userManager.Verify(x => x.FindByNameAsync(user.UserName),Times.Exactly(1));
+        _tokenService.Verify(x => x.GenerateToken(UserCredentialsConstants.UserName, UserCredentialsConstants.Email),Times.Never);
+
+        result.Should().BeAssignableTo<Result<ApplicationUserDto>>();
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().Be(DomainErrors.Registration.UserCreationFailed);
     }
 }

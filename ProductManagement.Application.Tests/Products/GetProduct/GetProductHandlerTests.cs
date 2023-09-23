@@ -91,6 +91,6 @@ public class GetProductHandlerTests
 
         result.Should().BeAssignableTo<Result<ProductDto>?>();
         result.IsFailure.Should().BeTrue();
-        result.Error.Should().Be(DomainErrors.Products.GetProduct);
+        result.Error.Should().Be(DomainErrors.Products.NotFound);
     }
 }
