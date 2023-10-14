@@ -50,4 +50,21 @@ public class CreateProductValidatorTests
         result.IsValid.Should().BeFalse();
         result.Errors.Count.Should().BeGreaterThan(0);
     }
+    
+    [Fact]
+    public async Task Validate_WithInvalidSkuProductData_ValidationFails()
+    {
+        var updateProductCommand = new CreateProductCommand()
+        {
+            Name = DataGenerator.GenerateString(50),
+            CategoryId = Guid.Empty,
+            Price = default,
+            Sku = DataGenerator.GenerateString(10)
+        };
+
+        var result = await _createProductValidator.ValidateAsync(updateProductCommand);
+
+        result.IsValid.Should().BeFalse();
+        result.Errors.Count.Should().BeGreaterThan(0);
+    }
 }

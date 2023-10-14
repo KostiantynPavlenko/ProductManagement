@@ -32,6 +32,7 @@ public class GlobalExceptionHandlingMiddleware : IMiddleware
             };
 
             var json = JsonSerializer.Serialize(problemDetails);
+            context.Response.StatusCode = (int) HttpStatusCode.BadRequest;
             context.Response.ContentType = "application/json";
             await context.Response.WriteAsync(json);
         }

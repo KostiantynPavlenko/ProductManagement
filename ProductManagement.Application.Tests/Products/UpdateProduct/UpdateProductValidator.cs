@@ -56,4 +56,25 @@ public class UpdateProductValidatorTests
         result.IsValid.Should().BeFalse();
         result.Errors.Count.Should().BeGreaterThan(0);
     }
+    
+    [Fact]
+    public void Validate_WithInvalidSkuProductData_ValidationIsPassed()
+    {
+        var updateProductCommand = new UpdateProductCommand()
+        {
+            Product = new ProductDto
+            {
+                Name = DataGenerator.GenerateString(50),
+                CategoryId = Guid.Empty,
+                Price = default,
+                ProductId = Guid.Empty,
+                Sku = DataGenerator.GenerateString(10)
+            }
+        };
+
+        var result = _updateProductValidator.Validate(updateProductCommand);
+
+        result.IsValid.Should().BeFalse();
+        result.Errors.Count.Should().BeGreaterThan(0);
+    }
 }

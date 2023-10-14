@@ -9,6 +9,7 @@ using ProductManagement.Domain.Products;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Newtonsoft.Json;
 using ProductManagement.API.IntegrationTests.Auth;
+using ProductManagement.Application.Products.DTO;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 
@@ -46,7 +47,7 @@ public class GetAllProductsTests
         
         var product = Product.Create("TestProduct",
             Guid.NewGuid(),
-            "TEST_123",
+            "TEST_1231111111111111111111111",
             123);
 
         var expected = new List<Product>()
@@ -59,7 +60,14 @@ public class GetAllProductsTests
 
         var response = await _client.GetAsync($"products/");
         var content = await response.Content.ReadAsStringAsync();
+        
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var test = JsonSerializer.Deserialize<List<Product>>(content);
+        var productResponse = JsonConvert.DeserializeObject<List<ProductDto>>(content);
+        productResponse.Should().SatisfyRespectively(first =>
+        {
+            first.Name.Should().Be(product.Name);
+            first.Sku.Should().Be(product.Sku.Value);
+            first.Price.Should().Be(product.Price.Amount);
+        });
     }
 }

@@ -27,7 +27,7 @@ public class Product : BaseEntity
         Sku = sku;
         Price = price;
     }
-
+    
     public string Name { get; private set; }
     public Guid CategoryId { get; private set; }
     public Category Category { get; private set; }
